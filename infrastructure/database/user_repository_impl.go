@@ -3,14 +3,21 @@ package database
 import (
 	"crud-test/core/app_error"
 	"crud-test/core/domain"
+	"crud-test/core/ports/driven"
 )
 
 type UserRepositoryImpl struct {
-	Database map[int]domain.User
+	database map[int]domain.User
+}
+
+func NewUserRepository(database map[int]domain.User) driven.UserRepository {
+	return &UserRepositoryImpl{
+		database: database,
+	}
 }
 
 func (repository UserRepositoryImpl) Persist(user domain.User) (domain.User, error) {
-	nextId := len(repository.Database) + 1
+	nextId := len(repository.database) + 1
 
 	userSaved := domain.User{
 		Id:       nextId,
@@ -18,13 +25,13 @@ func (repository UserRepositoryImpl) Persist(user domain.User) (domain.User, err
 		Password: user.Password,
 	}
 
-	repository.Database[nextId] = userSaved
+	repository.database[nextId] = userSaved
 
 	return userSaved, nil
 }
 
 func (repository UserRepositoryImpl) GetById(id int) (domain.User, error) {
-	user := repository.Database[id]
+	user := repository.database[id]
 
 	if user.Email == "" {
 		return domain.User{}, app_error.NewNotFoundError("user not found!!", nil)

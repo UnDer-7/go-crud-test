@@ -1,7 +1,7 @@
 package user
 
 type RequestUser struct {
-	Email     string `json:"email" binding:"required,email"`
+	Email    string `json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password"`
 }
 

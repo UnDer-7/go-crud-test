@@ -10,8 +10,14 @@ import (
 )
 
 type UserController struct {
-	Service driver.UserService
-	router *gin.RouterGroup
+	service driver.UserService
+	router  *gin.RouterGroup
+}
+
+func NewUserController(service driver.UserService) *UserController {
+	return &UserController{
+		service: service,
+	}
 }
 
 func (controller UserController) InitRoutes(engine *gin.Engine) {
@@ -33,7 +39,7 @@ func (controller UserController) create() {
 			return
 		}
 
-		userSaved, err := controller.Service.SaveUser(requestUserToUser(body))
+		userSaved, err := controller.service.SaveUser(requestUserToUser(body))
 		if err != nil {
 			fmt.Print(err)
 			c.JSON(http.StatusInternalServerError, err.Error())
@@ -44,11 +50,11 @@ func (controller UserController) create() {
 	})
 }
 
-func (controller UserController) findOne()  {
+func (controller UserController) findOne() {
 	controller.router.GET("/:id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("id"))
 
-		userFound, err := controller.Service.FindById(id)
+		userFound, err := controller.service.FindById(id)
 		if err != nil {
 			fmt.Print(err)
 			c.JSON(http.StatusBadRequest, gin.H{"app_error": err.Error()})

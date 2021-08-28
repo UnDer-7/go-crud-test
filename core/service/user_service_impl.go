@@ -3,11 +3,18 @@ package service
 import (
 	"crud-test/core/domain"
 	"crud-test/core/ports/driven"
+	"crud-test/core/ports/driver"
 	"fmt"
 )
 
 type UserServiceImpl struct {
-	Repository driven.UserRepository
+	repository driven.UserRepository
+}
+
+func NewUserService(repository driven.UserRepository) driver.UserService {
+	return &UserServiceImpl{
+		repository: repository,
+	}
 }
 
 func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
@@ -15,7 +22,7 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 		// Throw error
 	}
 
-	userSave, err := service.Repository.Persist(user)
+	userSave, err := service.repository.Persist(user)
 	if err != nil {
 		fmt.Print(err)
 		return domain.User{}, err
@@ -24,7 +31,7 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 }
 
 func (service UserServiceImpl) FindById(id int) (domain.User, error) {
-	userFound, err := service.Repository.GetById(id)
+	userFound, err := service.repository.GetById(id)
 	if err != nil {
 		fmt.Print(err)
 		return domain.User{}, err

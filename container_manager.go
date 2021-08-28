@@ -14,9 +14,9 @@ type container struct{}
 func (c *container) InjectUserController(engine *gin.Engine) {
 	database := make(map[int]domain.User)
 
-	userRepository := &db.UserRepositoryImpl{Database: database}
-	userService := &service.UserServiceImpl{Repository: userRepository}
-	userController := &user.UserController{Service: userService}
+	userRepository := db.NewUserRepository(database)
+	userService := service.NewUserService(userRepository)
+	userController := user.NewUserController(userService)
 
 	userController.InitRoutes(engine)
 }

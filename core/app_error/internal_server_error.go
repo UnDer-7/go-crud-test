@@ -8,7 +8,7 @@ import (
 
 type InternalServerError struct {
 	StatusCode int
-	Err error
+	Err        error
 }
 
 func NewInternalServerError(msg string, err error) *InternalServerError {

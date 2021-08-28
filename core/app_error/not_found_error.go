@@ -8,7 +8,7 @@ import (
 
 type NotFoundError struct {
 	StatusCode int
-	Err error
+	Err        error
 }
 
 func (err NotFoundError) Error() string {
