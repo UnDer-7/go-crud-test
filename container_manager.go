@@ -1,9 +1,10 @@
 package main
 
 import (
-	"crud-test/controller"
-	"crud-test/repositories"
-	"crud-test/service"
+	"crud-test/api/v1/user"
+	"crud-test/core/domain"
+	"crud-test/core/service"
+	db "crud-test/infrastructure/database"
 	"github.com/gin-gonic/gin"
 	"sync"
 )
@@ -11,11 +12,11 @@ import (
 type container struct{}
 
 func (c *container) InjectUserController(engine *gin.Engine) {
-	// todo: Config database
+	database := make(map[int]domain.User)
 
-	userRepository := &repositories.UserRepository{}
-	userService := service.UserService{Repository: userRepository}
-	userController := controller.UserController{Service: userService}
+	userRepository := &db.UserRepositoryImpl{Database: database}
+	userService := &service.UserServiceImpl{Repository: userRepository}
+	userController := &user.UserController{Service: userService}
 
 	userController.InitRoutes(engine)
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func main() {
@@ -9,5 +10,5 @@ func main() {
 
 	InitContainerManager(r)
 
-	r.Run(":8080")
+	log.Fatal(r.Run(":8080"))
 }

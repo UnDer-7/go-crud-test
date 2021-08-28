@@ -1,10 +1,12 @@
-package dto
+package user
 
-type UserRequest struct {
+type RequestUser struct {
 	Email     string `json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password"`
 }
 
-type UserResponse struct {
+type ResponseUser struct {
+	Id       int    `form:"id" json:"id"`
+	Email    string `form:"email" json:"email"`
 	Password string `form:"password" json:"password"`
 }
