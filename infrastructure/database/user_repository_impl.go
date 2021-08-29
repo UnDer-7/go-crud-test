@@ -4,6 +4,7 @@ import (
 	"crud-test/core/app_error"
 	"crud-test/core/domain"
 	"crud-test/core/ports/driven"
+	"fmt"
 )
 
 type UserRepositoryImpl struct {
@@ -34,7 +35,11 @@ func (repository UserRepositoryImpl) GetById(id int) (domain.User, error) {
 	user := repository.database[id]
 
 	if user.Email == "" {
-		return domain.User{}, app_error.NewNotFoundError("user not found!!", nil)
+		return domain.User{},
+			app_error.ThrowNotFoundError(
+				"user not found!!",
+				fmt.Sprintf("User with id %d is not in the database", id),
+				nil)
 	}
 	return user, nil
 }

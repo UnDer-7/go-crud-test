@@ -34,15 +34,13 @@ func (controller UserController) create() {
 	controller.router.POST("", func(c *gin.Context) {
 		var body RequestUser
 		if err := c.ShouldBindJSON(&body); err != nil {
-			fmt.Print(err)
-			c.JSON(http.StatusBadRequest, gin.H{"app_error": err.Error()})
+			c.Error(fmt.Errorf("erro ao deserializar json do request: %w", err))
 			return
 		}
 
 		userSaved, err := controller.service.SaveUser(requestUserToUser(body))
 		if err != nil {
-			fmt.Print(err)
-			c.JSON(http.StatusInternalServerError, err.Error())
+			c.Error(err)
 			return
 		}
 
@@ -56,8 +54,7 @@ func (controller UserController) findOne() {
 
 		userFound, err := controller.service.FindById(id)
 		if err != nil {
-			fmt.Print(err)
-			c.JSON(http.StatusBadRequest, gin.H{"app_error": err.Error()})
+			c.Error(err)
 			return
 		}
 

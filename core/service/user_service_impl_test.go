@@ -32,7 +32,7 @@ func TestUserServiceImpl_SaveUser(t *testing.T) {
 			EXPECT().
 			Persist(gomock.Eq(userSample)).
 			Times(1).
-			Return(domain.User{}, errors.New(expectedError ))
+			Return(domain.User{}, errors.New(expectedError))
 
 		_, err := service.SaveUser(userSample)
 
@@ -87,7 +87,7 @@ func TestUserServiceImpl_FindById(t *testing.T) {
 	})
 }
 
-func setupService(t *testing.T)(*mockDriven.MockUserRepository, driver.UserService, domain.User) {
+func setupService(t *testing.T) (*mockDriven.MockUserRepository, driver.UserService, domain.User) {
 	mockRepository := mockDriven.NewMockUserRepository(gomock.NewController(t))
 	service := NewUserService(mockRepository)
 	userSample := domain.User{

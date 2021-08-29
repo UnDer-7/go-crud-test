@@ -33,7 +33,6 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 func (service UserServiceImpl) FindById(id int) (domain.User, error) {
 	userFound, err := service.repository.GetById(id)
 	if err != nil {
-		fmt.Print(err)
 		return domain.User{}, err
 	}
 	return userFound, nil
