@@ -50,7 +50,7 @@ func TestUserServiceImpl_FindById(t *testing.T) {
 	t.Run("Should find an user by id successfully", func(t *testing.T) {
 		mockRepository, service, userSample := setupService(t)
 		expectedId := 42
-		userSample.Id = expectedId
+		userSample.ID = expectedId
 
 		mockRepository.
 			EXPECT().
@@ -91,7 +91,7 @@ func setupService(t *testing.T) (*mockDriven.MockUserRepository, driver.UserServ
 	mockRepository := mockDriven.NewMockUserRepository(gomock.NewController(t))
 	service := NewUserService(mockRepository)
 	userSample := domain.User{
-		Id:       0,
+		ID:       0,
 		Email:    "abc@acb.abc",
 		Password: "1234",
 	}

@@ -1,20 +1,21 @@
-package main
+package ioc
 
 import (
 	"crud-test/api/v1/user"
-	"crud-test/core/domain"
 	"crud-test/core/service"
-	db "crud-test/infrastructure/database"
+	"crud-test/infrastructure/config"
+	db "crud-test/infrastructure/repository"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"sync"
 )
 
-type container struct{}
+type container struct{
+	db *gorm.DB
+}
 
 func (c *container) InjectUserController(engine *gin.Engine) {
-	database := make(map[int]domain.User)
-
-	userRepository := db.NewUserRepository(database)
+	userRepository := db.NewUserRepository(c.db)
 	userService := service.NewUserService(userRepository)
 	userController := user.NewUserController(userService)
 
@@ -29,7 +30,7 @@ var (
 func InitContainerManager(engine *gin.Engine) {
 	if c == nil {
 		containerOnce.Do(func() {
-			c = &container{}
+			c = &container{config.DatabaseConfig()}
 		})
 	}
 

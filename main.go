@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crud-test/infrastructure/ioc"
 	"crud-test/infrastructure/middleware"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -13,7 +14,7 @@ func main() {
 	r.Use(gin.CustomRecovery(middleware.HandlePanicRecovery))
 	r.Use(middleware.HandleAppError)
 
-	InitContainerManager(r)
+	ioc.InitContainerManager(r)
 
 	log.Fatal(r.Run(":8080"))
 }

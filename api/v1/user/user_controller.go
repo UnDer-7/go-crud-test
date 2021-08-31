@@ -64,7 +64,7 @@ func (controller UserController) findOne() {
 
 func requestUserToUser(user RequestUser) domain.User {
 	return domain.User{
-		Id:       0,
+		ID:       0,
 		Email:    user.Email,
 		Password: user.Password,
 	}

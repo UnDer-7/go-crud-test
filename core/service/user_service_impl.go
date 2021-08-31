@@ -18,7 +18,7 @@ func NewUserService(repository driven.UserRepository) driver.UserService {
 }
 
 func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
-	if user.Id != 0 {
+	if user.ID != 0 {
 		// Throw error
 	}
 
