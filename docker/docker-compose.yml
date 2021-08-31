@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    container_name: db.go-crud-test
+    ports:
+      - "15432:5432"
+    volumes:
+      - ${HOME}/.docker_volume/pg/go-crud-test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: go-crud-test
