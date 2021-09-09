@@ -3,9 +3,11 @@ package main
 import (
 	"crud-test/infrastructure/ioc"
 	"crud-test/infrastructure/middleware"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
+	"os"
 )
 
 func main() {
@@ -21,5 +23,5 @@ func main() {
 
 	ioc.InitContainerManager(r)
 
-	log.Fatal(r.Run(":8080"))
+	log.Fatal(r.Run(fmt.Sprintf(":%s", os.Getenv("GO_CRUD_TEST_PORT"))))
 }
