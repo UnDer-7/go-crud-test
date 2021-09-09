@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-type container struct{
+type container struct {
 	db *gorm.DB
 }
 
