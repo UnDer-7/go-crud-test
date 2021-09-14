@@ -1,11 +1,11 @@
 package service
 
 import (
+	"errors"
+	"github.com/golang/mock/gomock"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driver"
 	mockDriven "my-tracking-list-backend/test_helpers/mock"
-	"errors"
-	"github.com/golang/mock/gomock"
 	"testing"
 )
 

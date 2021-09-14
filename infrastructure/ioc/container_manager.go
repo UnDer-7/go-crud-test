@@ -1,19 +1,19 @@
 package ioc
 
 import (
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 	"my-tracking-list-backend/api/v1/auth"
 	"my-tracking-list-backend/api/v1/user"
 	"my-tracking-list-backend/core/service"
 	"my-tracking-list-backend/infrastructure/config"
 	"my-tracking-list-backend/infrastructure/oauth"
 	db "my-tracking-list-backend/infrastructure/repository"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"sync"
 )
 
 type container struct {
-	db *gorm.DB
+	db *mongo.Database
 }
 
 func (c *container) InjectUserController(engine *gin.Engine) {

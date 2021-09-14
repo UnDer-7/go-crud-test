@@ -1,10 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
 	"my-tracking-list-backend/core/ports/driver"
-	"fmt"
 )
 
 type UserServiceImpl struct {
@@ -18,10 +18,6 @@ func NewUserService(repository driven.UserRepository) driver.UserService {
 }
 
 func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
-	if user.ID != 0 {
-		// Throw error
-	}
-
 	userSave, err := service.repository.Persist(user)
 	if err != nil {
 		fmt.Print(err)

@@ -1,9 +1,9 @@
 package auth
 
 import (
+	"github.com/gin-gonic/gin"
 	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/ports/driver"
-	"github.com/gin-gonic/gin"
 )
 
 type Controller struct {

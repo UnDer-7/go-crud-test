@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"my-tracking-list-backend/core/app_error"
 	"github.com/gin-gonic/gin"
+	"my-tracking-list-backend/core/app_error"
 )
 
 func HandlePanicRecovery(c *gin.Context, _ interface{}) {

@@ -1,14 +1,13 @@
 version: '3.1'
 
 services:
-  db:
-    image: postgres
-    container_name: db.go-crud-test
+  mongo:
+    image: mongo
+    container_name: my_tracking_list-db
     ports:
-      - "15432:5432"
+      - "27017:27017"
     volumes:
-      - ${HOME}/.docker_volume/pg/go-crud-test:/var/lib/postgresql/data
+      - ${HOME}/.docker_volume/mongo/my-tracking-list:/data/db
     environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
-      POSTGRES_DB: go-crud-test
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin

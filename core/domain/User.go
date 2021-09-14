@@ -1,15 +1,14 @@
 package domain
 
 import (
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
 type User struct {
-	gorm.Model
-	ID        int
-	Email     string
-	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        primitive.ObjectID `bson:"_id"`
+	Email     string             `bson:"email"`
+	Password  string             `bson:"password"`
+	CreatedAt time.Time          `bson:"created_at"`
+	UpdatedAt time.Time          `bson:"updated_at"`
 }

@@ -1,27 +1,29 @@
 package repository
 
 import (
+	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
-	"gorm.io/gorm"
 )
 
 type UserRepositoryImpl struct {
-	database *gorm.DB
+	database *mongo.Database
 }
 
-func NewUserRepository(database *gorm.DB) driven.UserRepository {
+func NewUserRepository(database *mongo.Database) driven.UserRepository {
 	return &UserRepositoryImpl{
 		database: database,
 	}
 }
 
 func (repository UserRepositoryImpl) Persist(user domain.User) (domain.User, error) {
-	err := repository.database.Create(&user).Error
+	res, err := repository.database.Collection("user").InsertOne(context.Background(), user)
 	if err != nil {
 		return domain.User{}, err
 	}
-
+	fmt.Printf("Id gerado: %v\n", res.InsertedID)
 	return user, nil
 }
 

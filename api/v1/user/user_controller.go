@@ -1,10 +1,10 @@
 package user
 
 import (
-	"my-tracking-list-backend/core/domain"
-	"my-tracking-list-backend/core/ports/driver"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driver"
 	"net/http"
 	"strconv"
 )
@@ -64,7 +64,6 @@ func (controller UserController) findOne() {
 
 func requestUserToUser(user RequestUser) domain.User {
 	return domain.User{
-		ID:       0,
 		Email:    user.Email,
 		Password: user.Password,
 	}

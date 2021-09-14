@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"my-tracking-list-backend/core/app_error"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"my-tracking-list-backend/core/app_error"
 )
 
 func HandleAppError(c *gin.Context) {
