@@ -34,8 +34,9 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 	return userSave, nil
 }
 
-func (service UserServiceImpl) FindById(id int) (domain.User, error) {
-	userFound, err := service.repository.GetById(id)
+func (service UserServiceImpl) FindByEmail(email string) (domain.User, error) {
+	// todo: validar email
+	userFound, err := service.repository.GetByEmail(email)
 	if err != nil {
 		return domain.User{}, err
 	}

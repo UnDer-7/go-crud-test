@@ -6,7 +6,6 @@ import (
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driver"
 	"net/http"
-	"strconv"
 )
 
 type UserController struct {
@@ -49,10 +48,10 @@ func (controller UserController) create() {
 }
 
 func (controller UserController) findOne() {
-	controller.router.GET("/:id", func(c *gin.Context) {
-		id, _ := strconv.Atoi(c.Param("id"))
+	controller.router.GET("/email/:email", func(c *gin.Context) {
+		email := c.Param("email")
 
-		userFound, err := controller.service.FindById(id)
+		userFound, err := controller.service.FindByEmail(email)
 		if err != nil {
 			c.Error(err)
 			return
