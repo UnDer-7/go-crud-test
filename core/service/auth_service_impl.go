@@ -14,7 +14,7 @@ func NewAuthService(oauth driven.OauthHandler) *AuthServiceImpl {
 }
 
 func (s AuthServiceImpl) Login(token string) error {
-	tokenGoogle, err := s.oauth.GoogleLogin(token)
+	tokenGoogle, err := s.oauth.DecodeGoogleToken(token)
 	if err != nil {
 		return err
 	}
