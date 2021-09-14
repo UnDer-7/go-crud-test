@@ -13,7 +13,8 @@ import (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Erro ao carregar variaveis de ambiente: %v", err)
+		// todo: Usar lib de log
+		fmt.Printf("\nNenhuma vareavel sera carregada do .env!!! \tErr: %v\n\n", err)
 	}
 
 	r := gin.New()
