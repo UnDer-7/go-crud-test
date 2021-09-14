@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
 	"my-tracking-list-backend/core/ports/driver"
@@ -18,6 +19,13 @@ func NewUserService(repository driven.UserRepository) driver.UserService {
 }
 
 func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
+	if !user.ID.IsZero() {
+		return domain.User{}, app_error.ThrowBusinessError(
+			"Um error ocorreu, tente novamente",
+			"Nao pode criar usuario com Id",
+		)
+	}
+
 	userSave, err := service.repository.Persist(user)
 	if err != nil {
 		fmt.Print(err)

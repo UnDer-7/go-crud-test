@@ -40,6 +40,15 @@ func ThrowNotFoundError(userMsg, developerMsg string, originErr error) *AppError
 	}
 }
 
+func ThrowBusinessError(usrMsg, devMsg string) *AppError {
+	return &AppError{
+		StatusCode:       http.StatusUnprocessableEntity,
+		UserMessage:      usrMsg,
+		DeveloperMessage: devMsg,
+		OriginalError:    nil,
+	}
+}
+
 func (ae AppError) Error() string {
 	jsonString, err := json.Marshal(ae)
 	if err != nil {
