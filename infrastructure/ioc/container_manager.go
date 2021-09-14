@@ -1,9 +1,11 @@
 package ioc
 
 import (
+	"crud-test/api/v1/auth"
 	"crud-test/api/v1/user"
 	"crud-test/core/service"
 	"crud-test/infrastructure/config"
+	"crud-test/infrastructure/oauth"
 	db "crud-test/infrastructure/repository"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -22,6 +24,14 @@ func (c *container) InjectUserController(engine *gin.Engine) {
 	userController.InitRoutes(engine)
 }
 
+func (c *container) InjectAuthController(engine *gin.Engine) {
+	oauthHandler := oauth.NewOauthHandler()
+	authService := service.NewAuthService(oauthHandler)
+	authController := auth.NewAuthController(authService)
+
+	authController.InitRoutes(engine)
+}
+
 var (
 	c             *container
 	containerOnce sync.Once
@@ -35,4 +45,5 @@ func InitContainerManager(engine *gin.Engine) {
 	}
 
 	c.InjectUserController(engine)
+	c.InjectAuthController(engine)
 }

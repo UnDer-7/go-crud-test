@@ -17,7 +17,7 @@ func DatabaseConfig() *gorm.DB {
 		os.Getenv("GO_CRUD_TEST_DATABASE_PORT"),
 		os.Getenv("GO_CRUD_TEST_DATABASE_SSL_MODE"),
 		os.Getenv("GO_CRUD_TEST_DATABASE_TIME_ZONE"),
-		)
+	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 

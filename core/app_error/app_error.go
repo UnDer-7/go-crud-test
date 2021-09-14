@@ -7,16 +7,25 @@ import (
 )
 
 type AppError struct {
-	StatusCode       int    `json:"statusCode,omitempty"`
-	UserMessage      string `json:"userMessage,omitempty"`
-	DeveloperMessage string `json:"developerMessage,omitempty"`
-	OriginalError    error  `json:"originalError,omitempty"`
+	StatusCode       int    `json:"statusCode"`
+	UserMessage      string `json:"userMessage"`
+	DeveloperMessage string `json:"developerMessage"`
+	OriginalError    error  `json:"-"`
 }
 
 func ThrowInternalServerError(developerMsg string, originErr error) *AppError {
 	return &AppError{
 		StatusCode:       http.StatusInternalServerError,
 		UserMessage:      "Algo deu errado",
+		DeveloperMessage: developerMsg,
+		OriginalError:    originErr,
+	}
+}
+
+func ThrowBadRequestError(usrMsg, developerMsg string, originErr error) *AppError {
+	return &AppError{
+		StatusCode:       http.StatusBadRequest,
+		UserMessage:      usrMsg,
 		DeveloperMessage: developerMsg,
 		OriginalError:    originErr,
 	}

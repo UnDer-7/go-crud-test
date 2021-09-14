@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crud-test/infrastructure/config"
 	"crud-test/infrastructure/ioc"
 	"crud-test/infrastructure/middleware"
 	"fmt"
@@ -17,6 +18,7 @@ func main() {
 
 	r := gin.New()
 	r.Use(gin.Logger())
+	r.Use(config.CORSConfig())
 
 	r.Use(gin.CustomRecovery(middleware.HandlePanicRecovery))
 	r.Use(middleware.HandleAppError)
