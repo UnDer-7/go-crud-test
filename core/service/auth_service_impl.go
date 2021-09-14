@@ -1,8 +1,8 @@
 package service
 
 import (
-	"crud-test/core/ports/driven"
 	"fmt"
+	"my-tracking-list-backend/core/ports/driven"
 )
 
 type AuthServiceImpl struct {

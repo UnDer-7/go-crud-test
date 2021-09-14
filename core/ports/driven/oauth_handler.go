@@ -1,6 +1,6 @@
 package driven
 
-import "crud-test/core/domain"
+import "my-tracking-list-backend/core/domain"
 
 type OauthHandler interface {
 	GoogleLogin(token string) (domain.GoogleToken, error)

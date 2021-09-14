@@ -5,7 +5,7 @@
 package mock_driven
 
 import (
-	domain "crud-test/core/domain"
+	domain "my-tracking-list-backend/core/domain"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"

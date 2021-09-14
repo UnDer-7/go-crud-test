@@ -1,12 +1,12 @@
 package ioc
 
 import (
-	"crud-test/api/v1/auth"
-	"crud-test/api/v1/user"
-	"crud-test/core/service"
-	"crud-test/infrastructure/config"
-	"crud-test/infrastructure/oauth"
-	db "crud-test/infrastructure/repository"
+	"my-tracking-list-backend/api/v1/auth"
+	"my-tracking-list-backend/api/v1/user"
+	"my-tracking-list-backend/core/service"
+	"my-tracking-list-backend/infrastructure/config"
+	"my-tracking-list-backend/infrastructure/oauth"
+	db "my-tracking-list-backend/infrastructure/repository"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"sync"

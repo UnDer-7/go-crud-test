@@ -1,4 +1,4 @@
-module crud-test
+module my-tracking-list-backend
 
 go 1.16
 

@@ -1,8 +1,8 @@
 package user
 
 import (
-	"crud-test/core/domain"
-	"crud-test/core/ports/driver"
+	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driver"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"

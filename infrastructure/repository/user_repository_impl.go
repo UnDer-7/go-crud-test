@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"crud-test/core/domain"
-	"crud-test/core/ports/driven"
+	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driven"
 	"gorm.io/gorm"
 )
 

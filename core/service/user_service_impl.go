@@ -1,9 +1,9 @@
 package service
 
 import (
-	"crud-test/core/domain"
-	"crud-test/core/ports/driven"
-	"crud-test/core/ports/driver"
+	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driven"
+	"my-tracking-list-backend/core/ports/driver"
 	"fmt"
 )
 

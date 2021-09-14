@@ -1,13 +1,13 @@
 package main
 
 import (
-	"crud-test/infrastructure/config"
-	"crud-test/infrastructure/ioc"
-	"crud-test/infrastructure/middleware"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
+	"my-tracking-list-backend/infrastructure/config"
+	"my-tracking-list-backend/infrastructure/ioc"
+	"my-tracking-list-backend/infrastructure/middleware"
 	"os"
 )
 

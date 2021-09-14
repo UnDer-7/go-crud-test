@@ -1,9 +1,9 @@
 package service
 
 import (
-	"crud-test/core/domain"
-	"crud-test/core/ports/driver"
-	mockDriven "crud-test/test_helpers/mock"
+	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driver"
+	mockDriven "my-tracking-list-backend/test_helpers/mock"
 	"errors"
 	"github.com/golang/mock/gomock"
 	"testing"

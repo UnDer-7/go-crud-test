@@ -1,8 +1,8 @@
 package oauth
 
 import (
-	"crud-test/core/app_error"
-	"crud-test/core/domain"
+	"my-tracking-list-backend/core/app_error"
+	"my-tracking-list-backend/core/domain"
 	"github.com/dgrijalva/jwt-go"
 	"google.golang.org/api/oauth2/v1"
 	"net/http"
