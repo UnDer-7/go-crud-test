@@ -25,8 +25,11 @@ func (c *container) InjectUserController(engine *gin.Engine) {
 }
 
 func (c *container) InjectAuthController(engine *gin.Engine) {
+	userRepository := db.NewUserRepository(c.db)
+	userService := service.NewUserService(userRepository)
+
 	oauthHandler := oauth.NewOauthHandler()
-	authService := service.NewAuthService(oauthHandler)
+	authService := service.NewAuthService(oauthHandler, userService)
 	authController := auth.NewAuthController(authService)
 
 	authController.InitRoutes(engine)

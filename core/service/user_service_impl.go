@@ -26,6 +26,8 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 		)
 	}
 
+	// todo: validar se usr ja existe, email 'e unico
+	// todo: validar campos do user para n deixar inserir com vazios/nils
 	userSave, err := service.repository.Persist(user)
 	if err != nil {
 		fmt.Print(err)

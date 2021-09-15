@@ -1,5 +1,7 @@
 package driver
 
+import "my-tracking-list-backend/core/domain"
+
 type AuthService interface {
-	Login(token string) error
+	Create(toke string) (domain.User, error)
 }

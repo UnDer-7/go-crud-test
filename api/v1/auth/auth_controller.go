@@ -21,12 +21,12 @@ func (c Controller) InitRoutes(engine *gin.Engine) {
 
 	c.router = router
 
-	c.login()
+	c.create()
 }
 
-func (c Controller) login() {
+func (c Controller) create() {
 	router := c.router
-	router.POST("/login/google", func(ctx *gin.Context) {
+	router.POST("/create/google", func(ctx *gin.Context) {
 		var body RequestToken
 
 		if err := ctx.ShouldBindJSON(&body); err != nil {
@@ -34,9 +34,11 @@ func (c Controller) login() {
 			return
 		}
 
-		if err := c.service.Login(body.Token); err != nil {
+		usr, err := c.service.Create(body.Token)
+		if err != nil {
 			ctx.Error(err)
 			return
 		}
+		ctx.JSON(201, usr)
 	})
 }
