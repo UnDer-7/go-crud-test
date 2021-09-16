@@ -26,7 +26,15 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 		)
 	}
 
-	// todo: validar se usr ja existe, email 'e unico
+	if existes, err := service.UserExistes(user.Email); err != nil {
+		return domain.User{}, err
+	} else if existes {
+		return domain.User{}, app_error.ThrowBusinessError(
+			"Usuario ja cadastrado",
+			"Usuario ja cadastrado",
+		)
+	}
+
 	// todo: validar campos do user para n deixar inserir com vazios/nils
 	userSave, err := service.repository.Persist(user)
 	if err != nil {
@@ -43,4 +51,8 @@ func (service UserServiceImpl) FindByEmail(email string) (domain.User, error) {
 		return domain.User{}, err
 	}
 	return userFound, nil
+}
+
+func (service UserServiceImpl) UserExistes(email string) (bool, error) {
+	return service.repository.ExistesByEmail(email)
 }

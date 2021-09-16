@@ -1,6 +1,7 @@
 package service
 
 import (
+	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
 	"my-tracking-list-backend/core/ports/driver"
@@ -31,4 +32,26 @@ func (s AuthServiceImpl) Create(toke string) (domain.User, error) {
 		return domain.User{}, err
 	}
 	return usr, nil
+}
+
+func (s AuthServiceImpl) Login(token string) error {
+	tokenGoogle, err := s.oauth.DecodeGoogleToken(token)
+	if err != nil {
+		return err
+	}
+
+	exists, er := s.userService.UserExistes(tokenGoogle.Email)
+	if er != nil {
+		return er
+	}
+
+	if !exists {
+		return app_error.ThrowNotFoundError(
+			"Usuario nao cadastrado",
+			"Usuario nao cadastrado",
+			nil,
+		)
+	}
+
+	return nil
 }

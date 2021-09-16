@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/ports/driver"
+	"net/http"
 )
 
 type Controller struct {
@@ -21,12 +22,29 @@ func (c Controller) InitRoutes(engine *gin.Engine) {
 
 	c.router = router
 
+	c.login()
 	c.create()
 }
 
+func (c Controller) login() {
+	c.router.POST("/login/google", func(ctx *gin.Context) {
+		var body RequestToken
+		if err := ctx.ShouldBindJSON(&body); err != nil {
+			ctx.Error(app_error.ThrowInternalServerError("Erro ao deserializar token", err))
+			return
+		}
+
+		if err := c.service.Login(body.Token); err != nil {
+			ctx.Error(err)
+			return
+		}
+
+		ctx.Status(http.StatusNoContent)
+	})
+}
+
 func (c Controller) create() {
-	router := c.router
-	router.POST("/create/google", func(ctx *gin.Context) {
+	c.router.POST("/create/google", func(ctx *gin.Context) {
 		var body RequestToken
 
 		if err := ctx.ShouldBindJSON(&body); err != nil {
