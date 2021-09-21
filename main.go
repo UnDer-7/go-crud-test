@@ -26,5 +26,5 @@ func main() {
 
 	ioc.InitContainerManager(r)
 
-	log.Fatal(r.Run(fmt.Sprintf(":%s", os.Getenv("GO_CRUD_TEST_PORT"))))
+	log.Fatal(r.Run(fmt.Sprintf(":%s", os.Getenv("MY_TRACKING_LIST_PORT"))))
 }

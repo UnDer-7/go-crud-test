@@ -1,7 +1,6 @@
 package service
 
 import (
-	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
 	"my-tracking-list-backend/core/ports/driver"
@@ -16,13 +15,26 @@ func NewAuthService(oauth driven.OauthHandler, userService driver.UserService) *
 	return &AuthServiceImpl{oauth: oauth, userService: userService}
 }
 
-func (s AuthServiceImpl) Create(toke string) (domain.User, error) {
-	tokenGoogle, err := s.oauth.DecodeGoogleToken(toke)
+func (s AuthServiceImpl) SignIn(token string) (domain.User, error) {
+	tokenGoogle, err := s.oauth.DecodeGoogleToken(token)
 	if err != nil {
 		return domain.User{}, err
 	}
 
-	usr, err := s.userService.SaveUser(domain.User{
+	exists, err := s.userService.UserExistes(tokenGoogle.Email)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	if exists {
+		userFound, err := s.userService.FindByEmail(tokenGoogle.Email)
+		if err != nil {
+			return domain.User{}, err
+		}
+		return userFound, nil
+	}
+
+	userCreated, err := s.userService.SaveUser(domain.User{
 		Email:      tokenGoogle.Email,
 		Name:       tokenGoogle.Name,
 		GivenName:  tokenGoogle.GivenName,
@@ -31,27 +43,5 @@ func (s AuthServiceImpl) Create(toke string) (domain.User, error) {
 	if err != nil {
 		return domain.User{}, err
 	}
-	return usr, nil
-}
-
-func (s AuthServiceImpl) Login(token string) error {
-	tokenGoogle, err := s.oauth.DecodeGoogleToken(token)
-	if err != nil {
-		return err
-	}
-
-	exists, er := s.userService.UserExistes(tokenGoogle.Email)
-	if er != nil {
-		return er
-	}
-
-	if !exists {
-		return app_error.ThrowNotFoundError(
-			"Usuario nao cadastrado",
-			"Usuario nao cadastrado",
-			nil,
-		)
-	}
-
-	return nil
+	return userCreated, nil
 }
