@@ -36,7 +36,7 @@ func (controller UserController) findOne() {
 			return
 		}
 
-		c.JSON(http.StatusOK, userFound)
+		c.JSON(http.StatusOK, userToResponseUser(userFound))
 	})
 }
 
