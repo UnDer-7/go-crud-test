@@ -7,6 +7,7 @@ import (
 
 func CORSConfig() gin.HandlerFunc {
 	config := cors.DefaultConfig()
+	config.AddAllowHeaders("Authorization")
 	config.AllowOrigins = []string{
 		"http://localhost:3000",
 		"http://127.0.0.1:3000",

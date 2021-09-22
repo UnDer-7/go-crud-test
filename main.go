@@ -6,8 +6,6 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"my-tracking-list-backend/infrastructure/config"
-	"my-tracking-list-backend/infrastructure/ioc"
-	"my-tracking-list-backend/infrastructure/middleware"
 	"os"
 )
 
@@ -21,10 +19,7 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(config.CORSConfig())
 
-	r.Use(gin.CustomRecovery(middleware.HandlePanicRecovery))
-	r.Use(middleware.HandleAppError)
-
-	ioc.InitContainerManager(r)
+	config.InitIoCManager(r)
 
 	log.Fatal(r.Run(fmt.Sprintf(":%s", os.Getenv("MY_TRACKING_LIST_PORT"))))
 }

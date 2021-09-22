@@ -1,4 +1,4 @@
-package ioc
+package config
 
 import (
 	"github.com/gin-gonic/gin"
@@ -6,7 +6,7 @@ import (
 	"my-tracking-list-backend/api/v1/auth"
 	"my-tracking-list-backend/api/v1/user"
 	"my-tracking-list-backend/core/service"
-	"my-tracking-list-backend/infrastructure/config"
+	"my-tracking-list-backend/infrastructure/middleware"
 	"my-tracking-list-backend/infrastructure/oauth"
 	db "my-tracking-list-backend/infrastructure/repository"
 	"sync"
@@ -19,7 +19,9 @@ type container struct {
 func (c *container) InjectUserController(engine *gin.Engine) {
 	userRepository := db.NewUserRepository(c.db)
 	userService := service.NewUserService(userRepository)
-	userController := user.NewUserController(userService)
+	oauthHandler := oauth.NewOauthHandler()
+	authMiddleware := middleware.NewAuthenticationMiddleware(userService, oauthHandler)
+	userController := user.NewUserController(userService, authMiddleware)
 
 	userController.InitRoutes(engine)
 }
@@ -40,13 +42,23 @@ var (
 	containerOnce sync.Once
 )
 
-func InitContainerManager(engine *gin.Engine) {
+func InitIoCManager(engine *gin.Engine) {
 	if c == nil {
 		containerOnce.Do(func() {
-			c = &container{config.DatabaseConfig()}
+			c = &container{DatabaseConfig()}
 		})
 	}
 
+	initEssentialsMiddlewares(engine)
+
 	c.InjectUserController(engine)
 	c.InjectAuthController(engine)
+}
+
+func initEssentialsMiddlewares(engine *gin.Engine) {
+	appErroMiddleware := middleware.NewAppErrorMiddleware()
+	panicRecoveryMiddleware := middleware.NewPanicRecoveryMiddleware()
+
+	engine.Use(appErroMiddleware.WithAppError)
+	engine.Use(gin.CustomRecovery(panicRecoveryMiddleware.WithPanicRecovery))
 }
