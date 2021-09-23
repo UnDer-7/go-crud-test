@@ -8,17 +8,17 @@ import (
 	"my-tracking-list-backend/core/ports/driver"
 )
 
-type UserServiceImpl struct {
+type userService struct {
 	repository driven.UserRepository
 }
 
 func NewUserService(repository driven.UserRepository) driver.UserService {
-	return &UserServiceImpl{
+	return &userService{
 		repository: repository,
 	}
 }
 
-func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
+func (service userService) SaveUser(user domain.User) (domain.User, error) {
 	if !user.ID.IsZero() {
 		return domain.User{}, app_error.ThrowBusinessError(
 			"Um error ocorreu, tente novamente",
@@ -44,7 +44,7 @@ func (service UserServiceImpl) SaveUser(user domain.User) (domain.User, error) {
 	return userSave, nil
 }
 
-func (service UserServiceImpl) FindByEmail(email string) (domain.User, error) {
+func (service userService) FindByEmail(email string) (domain.User, error) {
 	// todo: validar email
 	userFound, err := service.repository.GetByEmail(email)
 	if err != nil {
@@ -53,6 +53,6 @@ func (service UserServiceImpl) FindByEmail(email string) (domain.User, error) {
 	return userFound, nil
 }
 
-func (service UserServiceImpl) UserExistes(email string) (bool, error) {
+func (service userService) UserExistes(email string) (bool, error) {
 	return service.repository.ExistesByEmail(email)
 }

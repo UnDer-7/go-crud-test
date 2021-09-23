@@ -5,17 +5,17 @@ import (
 	"google.golang.org/api/oauth2/v1"
 	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
+	"my-tracking-list-backend/core/ports/driven"
 	"net/http"
 )
 
-type Handler struct {
+type oauthHandler struct{}
+
+func NewOauthHandler() driven.OauthHandler {
+	return &oauthHandler{}
 }
 
-func NewOauthHandler() *Handler {
-	return &Handler{}
-}
-
-func (h Handler) DecodeGoogleToken(tokenStr string) (domain.GoogleToken, error) {
+func (h oauthHandler) DecodeGoogleToken(tokenStr string) (domain.GoogleToken, error) {
 	oauthService, err := oauth2.New(http.DefaultClient)
 	if err != nil {
 		return domain.GoogleToken{}, app_error.ThrowInternalServerError(

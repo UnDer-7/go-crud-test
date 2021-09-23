@@ -8,19 +8,19 @@ import (
 	"my-tracking-list-backend/core/ports/driver"
 )
 
-type AuthenticationImpl struct {
+type authentication struct {
 	userService  driver.UserService
 	oauthHandler driven.OauthHandler
 }
 
 func NewAuthenticationMiddleware(userService driver.UserService, oauthHandler driven.OauthHandler) middleware.Authentication {
-	return &AuthenticationImpl{
+	return &authentication{
 		userService:  userService,
 		oauthHandler: oauthHandler,
 	}
 }
 
-func (a AuthenticationImpl) WithAuthentication(ctx *gin.Context) {
+func (a authentication) WithAuthentication(ctx *gin.Context) {
 	whenAnErrorOccurs := func(err error) {
 		ctx.Error(err)
 		ctx.Abort()

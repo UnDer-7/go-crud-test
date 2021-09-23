@@ -13,19 +13,19 @@ import (
 	"time"
 )
 
-var UserCollectionName = "users"
+const UserCollectionName = "users"
 
-type UserRepositoryImpl struct {
+type userRepository struct {
 	collection *mongo.Collection
 }
 
 func NewUserRepository(database *mongo.Database) driven.UserRepository {
-	return &UserRepositoryImpl{
+	return &userRepository{
 		collection: database.Collection(UserCollectionName),
 	}
 }
 
-func (r UserRepositoryImpl) Persist(user domain.User) (domain.User, error) {
+func (r userRepository) Persist(user domain.User) (domain.User, error) {
 	user.ID = primitive.NewObjectID()
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = nil
@@ -37,7 +37,7 @@ func (r UserRepositoryImpl) Persist(user domain.User) (domain.User, error) {
 	return user, nil
 }
 
-func (r UserRepositoryImpl) GetByEmail(email string) (domain.User, error) {
+func (r userRepository) GetByEmail(email string) (domain.User, error) {
 	var user domain.User
 	err := r.collection.
 		FindOne(context.Background(), bson.M{"email": email}).
@@ -56,7 +56,7 @@ func (r UserRepositoryImpl) GetByEmail(email string) (domain.User, error) {
 	return user, nil
 }
 
-func (r UserRepositoryImpl) ExistesByEmail(email string) (bool, error) {
+func (r userRepository) ExistesByEmail(email string) (bool, error) {
 	limit := int64(1)
 	total, err := r.collection.CountDocuments(context.Background(), bson.M{"email": email}, &options.CountOptions{Limit: &limit})
 	if err != nil {

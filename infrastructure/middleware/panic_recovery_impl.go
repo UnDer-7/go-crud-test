@@ -6,13 +6,13 @@ import (
 	"my-tracking-list-backend/core/app_error"
 )
 
-type PanicRecoveryImpl struct{}
+type panicRecovery struct{}
 
 func NewPanicRecoveryMiddleware() middleware.PanicRecovery {
-	return &PanicRecoveryImpl{}
+	return &panicRecovery{}
 }
 
-func (_ PanicRecoveryImpl) WithPanicRecovery(ctx *gin.Context, _ interface{}) {
+func (_ panicRecovery) WithPanicRecovery(ctx *gin.Context, _ interface{}) {
 	interServerErr := app_error.ThrowInternalServerError("a panic has occurred", nil)
 	ctx.AbortWithStatusJSON(interServerErr.StatusCode, interServerErr)
 }

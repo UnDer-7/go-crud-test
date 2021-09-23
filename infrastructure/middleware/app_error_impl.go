@@ -7,13 +7,13 @@ import (
 	"my-tracking-list-backend/core/app_error"
 )
 
-type AppErrorImpl struct{}
+type appError struct{}
 
 func NewAppErrorMiddleware() middleware.AppError {
-	return &AppErrorImpl{}
+	return &appError{}
 }
 
-func (a AppErrorImpl) WithAppError(ctx *gin.Context) {
+func (_ appError) WithAppError(ctx *gin.Context) {
 	ctx.Next()
 	err := ctx.Errors.Last()
 

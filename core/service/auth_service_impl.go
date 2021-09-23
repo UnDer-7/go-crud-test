@@ -6,16 +6,16 @@ import (
 	"my-tracking-list-backend/core/ports/driver"
 )
 
-type AuthServiceImpl struct {
+type authService struct {
 	oauth       driven.OauthHandler
 	userService driver.UserService
 }
 
-func NewAuthService(oauth driven.OauthHandler, userService driver.UserService) *AuthServiceImpl {
-	return &AuthServiceImpl{oauth: oauth, userService: userService}
+func NewAuthService(oauth driven.OauthHandler, userService driver.UserService) driver.AuthService {
+	return &authService{oauth: oauth, userService: userService}
 }
 
-func (s AuthServiceImpl) SignIn(token string) (domain.User, error) {
+func (s authService) SignIn(token string) (domain.User, error) {
 	tokenGoogle, err := s.oauth.DecodeGoogleToken(token)
 	if err != nil {
 		return domain.User{}, err

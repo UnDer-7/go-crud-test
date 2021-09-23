@@ -16,27 +16,6 @@ type container struct {
 	db *mongo.Database
 }
 
-func (c *container) InjectUserController(engine *gin.Engine) {
-	userRepository := db.NewUserRepository(c.db)
-	userService := service.NewUserService(userRepository)
-	oauthHandler := oauth.NewOauthHandler()
-	authMiddleware := middleware.NewAuthenticationMiddleware(userService, oauthHandler)
-	userController := user.NewUserController(userService, authMiddleware)
-
-	userController.InitRoutes(engine)
-}
-
-func (c *container) InjectAuthController(engine *gin.Engine) {
-	userRepository := db.NewUserRepository(c.db)
-	userService := service.NewUserService(userRepository)
-
-	oauthHandler := oauth.NewOauthHandler()
-	authService := service.NewAuthService(oauthHandler, userService)
-	authController := auth.NewAuthController(authService)
-
-	authController.InitRoutes(engine)
-}
-
 var (
 	c             *container
 	containerOnce sync.Once
@@ -51,8 +30,29 @@ func InitIoCManager(engine *gin.Engine) {
 
 	initEssentialsMiddlewares(engine)
 
-	c.InjectUserController(engine)
-	c.InjectAuthController(engine)
+	c.injectUserController(engine)
+	c.injectAuthController(engine)
+}
+
+func (c *container) injectUserController(engine *gin.Engine) {
+	userRepository := db.NewUserRepository(c.db)
+	userService := service.NewUserService(userRepository)
+	oauthHandler := oauth.NewOauthHandler()
+	authMiddleware := middleware.NewAuthenticationMiddleware(userService, oauthHandler)
+	userController := user.NewUserController(userService, authMiddleware)
+
+	userController.InitRoutes(engine)
+}
+
+func (c *container) injectAuthController(engine *gin.Engine) {
+	userRepository := db.NewUserRepository(c.db)
+	userService := service.NewUserService(userRepository)
+
+	oauthHandler := oauth.NewOauthHandler()
+	authService := service.NewAuthService(oauthHandler, userService)
+	authController := auth.NewAuthController(authService)
+
+	authController.InitRoutes(engine)
 }
 
 func initEssentialsMiddlewares(engine *gin.Engine) {
