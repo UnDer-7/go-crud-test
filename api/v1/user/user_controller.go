@@ -10,13 +10,13 @@ import (
 
 type UserController struct {
 	authMiddleware middleware.Authentication
-	service     driver.UserService
-	router  *gin.RouterGroup
+	service        driver.UserService
+	router         *gin.RouterGroup
 }
 
 func NewUserController(service driver.UserService, authMiddleware middleware.Authentication) *UserController {
 	return &UserController{
-		service: service,
+		service:        service,
 		authMiddleware: authMiddleware,
 	}
 }
@@ -48,4 +48,3 @@ func (controller UserController) findOne() {
 		c.JSON(http.StatusOK, userToResponseUser(userFound))
 	})
 }
-

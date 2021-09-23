@@ -25,20 +25,20 @@ func (c Controller) InitRoutes(engine *gin.Engine) {
 }
 
 func (c Controller) signIn() {
-	 c.router.POST("/sign-in/google", func(ctx *gin.Context) {
-		 var body RequestToken
+	c.router.POST("/sign-in/google", func(ctx *gin.Context) {
+		var body RequestToken
 
-		 if err := ctx.ShouldBindJSON(&body); err != nil {
-			 ctx.Error(app_error.ThrowInternalServerError("Erro ao deserializar token", err))
-			 return
-		 }
+		if err := ctx.ShouldBindJSON(&body); err != nil {
+			ctx.Error(app_error.ThrowInternalServerError("Erro ao deserializar token", err))
+			return
+		}
 
-		 usr, err := c.service.SignIn(body.Token)
-		 if err != nil {
-			 ctx.Error(err)
-			 return
-		 }
+		usr, err := c.service.SignIn(body.Token)
+		if err != nil {
+			ctx.Error(err)
+			return
+		}
 
-		 ctx.JSON(200, userToResponseUser(usr))
-	 })
+		ctx.JSON(200, userToResponseUser(usr))
+	})
 }

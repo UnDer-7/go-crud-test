@@ -12,5 +12,5 @@ type User struct {
 	GivenName  string             `bson:"given_name"`
 	FamilyName string             `bson:"family_name"`
 	CreatedAt  time.Time          `bson:"created_at"`
-	UpdatedAt  *time.Time          `bson:"updated_at"`
+	UpdatedAt  *time.Time         `bson:"updated_at"`
 }

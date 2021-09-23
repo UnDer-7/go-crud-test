@@ -7,7 +7,7 @@ import (
 	"my-tracking-list-backend/core/app_error"
 )
 
-type AppErrorImpl struct {}
+type AppErrorImpl struct{}
 
 func NewAppErrorMiddleware() middleware.AppError {
 	return &AppErrorImpl{}

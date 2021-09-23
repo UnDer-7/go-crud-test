@@ -9,7 +9,7 @@ import (
 )
 
 type AuthenticationImpl struct {
-	userService driver.UserService
+	userService  driver.UserService
 	oauthHandler driven.OauthHandler
 }
 

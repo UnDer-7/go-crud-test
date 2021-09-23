@@ -79,7 +79,7 @@ func userEmailUniqueIndex(db *mongo.Database) {
 	_, err := db.Collection(repository.UserCollectionName).Indexes().CreateOne(
 		context.Background(),
 		mongo.IndexModel{
-			Keys: bson.D{{Key: emailTag, Value: bsonx.String("text")}},
+			Keys:    bson.D{{Key: emailTag, Value: bsonx.String("text")}},
 			Options: options.Index().SetUnique(true),
 		},
 	)

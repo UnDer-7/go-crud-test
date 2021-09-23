@@ -7,7 +7,7 @@ import (
 )
 
 type AuthServiceImpl struct {
-	oauth driven.OauthHandler
+	oauth       driven.OauthHandler
 	userService driver.UserService
 }
 

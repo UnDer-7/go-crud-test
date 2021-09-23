@@ -6,7 +6,7 @@ import (
 	"my-tracking-list-backend/core/app_error"
 )
 
-type PanicRecoveryImpl struct {}
+type PanicRecoveryImpl struct{}
 
 func NewPanicRecoveryMiddleware() middleware.PanicRecovery {
 	return &PanicRecoveryImpl{}
