@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"my-tracking-list-backend/api/middleware"
+	"my-tracking-list-backend/core/help"
 	"my-tracking-list-backend/core/ports/driver"
 	"net/http"
 )
@@ -37,7 +38,12 @@ func (controller UserController) findOne() {
 
 		// todo: Criar get/set para pegar valores do context
 		// https://medium.com/@matryer/context-keys-in-go-5312346a868d
-		tmp, _ := c.Get("UserEmail")
+		tmp, err := help.GetCurrentUserEmail(c)
+		if err != nil {
+			c.Error(err)
+			return
+		}
+
 		fmt.Printf("\n$$$$$$$$EMAIL FROM CTX: %s\n$$$$$", tmp)
 		userFound, err := controller.service.FindByEmail(email)
 		if err != nil {

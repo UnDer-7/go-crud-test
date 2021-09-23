@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"my-tracking-list-backend/api/middleware"
 	"my-tracking-list-backend/core/app_error"
+	"my-tracking-list-backend/core/help"
 	"my-tracking-list-backend/core/ports/driven"
 	"my-tracking-list-backend/core/ports/driver"
 )
@@ -49,8 +50,10 @@ func (a authentication) WithAuthentication(ctx *gin.Context) {
 		return
 	}
 
-	// todo: Criar um help pra setar e pegar os values do context
-	// https://medium.com/@matryer/context-keys-in-go-5312346a868d
-	ctx.Set("UserEmail", gToken.Email)
+	if err := help.SetCurrentUserEmail(ctx, gToken.Email); err != nil {
+		whenAnErrorOccurs(err)
+		return
+	}
+
 	ctx.Next()
 }
