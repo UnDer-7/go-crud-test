@@ -1,9 +1,12 @@
 package driven
 
-import "my-tracking-list-backend/core/domain"
+import (
+	"context"
+	"my-tracking-list-backend/core/domain"
+)
 
 type UserRepository interface {
-	Persist(user domain.User) (domain.User, error)
-	GetByEmail(email string) (domain.User, error)
-	ExistesByEmail(email string) (bool, error)
+	Persist(ctx context.Context, user domain.User) (domain.User, error)
+	GetByEmail(ctx context.Context, email string) (domain.User, error)
+	ExistesByEmail(ctx context.Context, email string) (bool, error)
 }

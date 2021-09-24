@@ -25,22 +25,22 @@ func NewUserRepository(database *mongo.Database) driven.UserRepository {
 	}
 }
 
-func (r userRepository) Persist(user domain.User) (domain.User, error) {
+func (r userRepository) Persist(ctx context.Context, user domain.User) (domain.User, error) {
 	user.ID = primitive.NewObjectID()
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = nil
 
-	_, err := r.collection.InsertOne(context.Background(), &user)
+	_, err := r.collection.InsertOne(ctx, &user)
 	if err != nil {
 		return domain.User{}, err
 	}
 	return user, nil
 }
 
-func (r userRepository) GetByEmail(email string) (domain.User, error) {
+func (r userRepository) GetByEmail(ctx context.Context, email string) (domain.User, error) {
 	var user domain.User
 	err := r.collection.
-		FindOne(context.Background(), bson.M{"email": email}).
+		FindOne(ctx, bson.M{"email": email}).
 		Decode(&user)
 
 	if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
@@ -56,9 +56,10 @@ func (r userRepository) GetByEmail(email string) (domain.User, error) {
 	return user, nil
 }
 
-func (r userRepository) ExistesByEmail(email string) (bool, error) {
+func (r userRepository) ExistesByEmail(ctx context.Context, email string) (bool, error) {
 	limit := int64(1)
-	total, err := r.collection.CountDocuments(context.Background(), bson.M{"email": email}, &options.CountOptions{Limit: &limit})
+	total, err := r.collection.
+		CountDocuments(ctx, bson.M{"email": email}, &options.CountOptions{Limit: &limit})
 	if err != nil {
 		return false, app_error.ThrowInternalServerError("Erro ao verificar se usuario existe por email", err)
 	}

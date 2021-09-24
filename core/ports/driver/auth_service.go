@@ -1,7 +1,10 @@
 package driver
 
-import "my-tracking-list-backend/core/domain"
+import (
+	"context"
+	"my-tracking-list-backend/core/domain"
+)
 
 type AuthService interface {
-	SignIn(token string) (domain.User, error)
+	SignIn(ctx context.Context, token string) (domain.User, error)
 }

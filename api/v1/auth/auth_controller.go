@@ -6,16 +6,16 @@ import (
 	"my-tracking-list-backend/core/ports/driver"
 )
 
-type Controller struct {
+type controller struct {
 	service driver.AuthService
 	router  *gin.RouterGroup
 }
 
-func NewAuthController(service driver.AuthService) *Controller {
-	return &Controller{service: service}
+func NewAuthController(service driver.AuthService) *controller {
+	return &controller{service: service}
 }
 
-func (c Controller) InitRoutes(engine *gin.Engine) {
+func (c controller) InitRoutes(engine *gin.Engine) {
 	v1 := engine.Group("v1")
 	router := v1.Group("/auth")
 
@@ -24,7 +24,7 @@ func (c Controller) InitRoutes(engine *gin.Engine) {
 	c.signIn()
 }
 
-func (c Controller) signIn() {
+func (c controller) signIn() {
 	c.router.POST("/sign-in/google", func(ctx *gin.Context) {
 		var body RequestToken
 
@@ -33,7 +33,7 @@ func (c Controller) signIn() {
 			return
 		}
 
-		usr, err := c.service.SignIn(body.Token)
+		usr, err := c.service.SignIn(ctx, body.Token)
 		if err != nil {
 			ctx.Error(err)
 			return

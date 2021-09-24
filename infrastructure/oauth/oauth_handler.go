@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"context"
 	"github.com/dgrijalva/jwt-go"
 	"google.golang.org/api/oauth2/v1"
 	"my-tracking-list-backend/core/app_error"
@@ -15,7 +16,7 @@ func NewOauthHandler() driven.OauthHandler {
 	return &oauthHandler{}
 }
 
-func (h oauthHandler) DecodeGoogleToken(tokenStr string) (domain.GoogleToken, error) {
+func (h oauthHandler) DecodeGoogleToken(ctx context.Context, tokenStr string) (domain.GoogleToken, error) {
 	oauthService, err := oauth2.New(http.DefaultClient)
 	if err != nil {
 		return domain.GoogleToken{}, app_error.ThrowInternalServerError(
@@ -24,6 +25,7 @@ func (h oauthHandler) DecodeGoogleToken(tokenStr string) (domain.GoogleToken, er
 	}
 
 	tokenInfoCall := oauthService.Tokeninfo()
+	tokenInfoCall.Context(ctx)
 	tokenInfoCall.IdToken(tokenStr)
 
 	if _, err := tokenInfoCall.Do(); err != nil {

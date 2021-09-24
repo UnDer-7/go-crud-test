@@ -29,13 +29,13 @@ func (a authentication) WithAuthentication(ctx *gin.Context) {
 
 	token := ctx.GetHeader("Authorization")
 	// todo: vai da merda quando fizer com facebook login
-	gToken, err := a.oauthHandler.DecodeGoogleToken(token)
+	gToken, err := a.oauthHandler.DecodeGoogleToken(ctx, token)
 	if err != nil {
 		whenAnErrorOccurs(err)
 		return
 	}
 
-	exists, err := a.userService.UserExistes(gToken.Email)
+	exists, err := a.userService.UserExistes(ctx, gToken.Email)
 	if err != nil {
 		whenAnErrorOccurs(err)
 		return

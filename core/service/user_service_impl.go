@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
@@ -18,7 +19,7 @@ func NewUserService(repository driven.UserRepository) driver.UserService {
 	}
 }
 
-func (service userService) SaveUser(user domain.User) (domain.User, error) {
+func (service userService) SaveUser(ctx context.Context, user domain.User) (domain.User, error) {
 	if !user.ID.IsZero() {
 		return domain.User{}, app_error.ThrowBusinessError(
 			"Um error ocorreu, tente novamente",
@@ -26,7 +27,7 @@ func (service userService) SaveUser(user domain.User) (domain.User, error) {
 		)
 	}
 
-	if existes, err := service.UserExistes(user.Email); err != nil {
+	if existes, err := service.UserExistes(ctx, user.Email); err != nil {
 		return domain.User{}, err
 	} else if existes {
 		return domain.User{}, app_error.ThrowBusinessError(
@@ -36,7 +37,7 @@ func (service userService) SaveUser(user domain.User) (domain.User, error) {
 	}
 
 	// todo: validar campos do user para n deixar inserir com vazios/nils
-	userSave, err := service.repository.Persist(user)
+	userSave, err := service.repository.Persist(ctx, user)
 	if err != nil {
 		fmt.Print(err)
 		return domain.User{}, err
@@ -44,15 +45,15 @@ func (service userService) SaveUser(user domain.User) (domain.User, error) {
 	return userSave, nil
 }
 
-func (service userService) FindByEmail(email string) (domain.User, error) {
+func (service userService) FindByEmail(ctx context.Context, email string) (domain.User, error) {
 	// todo: validar email
-	userFound, err := service.repository.GetByEmail(email)
+	userFound, err := service.repository.GetByEmail(ctx, email)
 	if err != nil {
 		return domain.User{}, err
 	}
 	return userFound, nil
 }
 
-func (service userService) UserExistes(email string) (bool, error) {
-	return service.repository.ExistesByEmail(email)
+func (service userService) UserExistes(ctx context.Context, email string) (bool, error) {
+	return service.repository.ExistesByEmail(ctx, email)
 }

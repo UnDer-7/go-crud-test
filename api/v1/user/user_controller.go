@@ -9,20 +9,20 @@ import (
 	"net/http"
 )
 
-type UserController struct {
+type controller struct {
 	authMiddleware middleware.Authentication
 	service        driver.UserService
 	router         *gin.RouterGroup
 }
 
-func NewUserController(service driver.UserService, authMiddleware middleware.Authentication) *UserController {
-	return &UserController{
+func NewUserController(service driver.UserService, authMiddleware middleware.Authentication) *controller {
+	return &controller{
 		service:        service,
 		authMiddleware: authMiddleware,
 	}
 }
 
-func (controller UserController) InitRoutes(engine *gin.Engine) {
+func (controller controller) InitRoutes(engine *gin.Engine) {
 	v1 := engine.Group("v1")
 	router := v1.Group("/users")
 	controller.router = router
@@ -32,25 +32,25 @@ func (controller UserController) InitRoutes(engine *gin.Engine) {
 	controller.findOne()
 }
 
-func (controller UserController) findOne() {
-	controller.router.GET("/email/:email", func(c *gin.Context) {
-		email := c.Param("email")
+func (controller controller) findOne() {
+	controller.router.GET("/email/:email", func(ctx *gin.Context) {
+		email := ctx.Param("email")
 
 		// todo: Criar get/set para pegar valores do context
 		// https://medium.com/@matryer/context-keys-in-go-5312346a868d
-		tmp, err := help.GetCurrentUserEmail(c)
+		tmp, err := help.GetCurrentUserEmail(ctx)
 		if err != nil {
-			c.Error(err)
+			ctx.Error(err)
 			return
 		}
 
 		fmt.Printf("\n$$$$$$$$EMAIL FROM CTX: %s\n$$$$$", tmp)
-		userFound, err := controller.service.FindByEmail(email)
+		userFound, err := controller.service.FindByEmail(ctx, email)
 		if err != nil {
-			c.Error(err)
+			ctx.Error(err)
 			return
 		}
 
-		c.JSON(http.StatusOK, userToResponseUser(userFound))
+		ctx.JSON(http.StatusOK, userToResponseUser(userFound))
 	})
 }

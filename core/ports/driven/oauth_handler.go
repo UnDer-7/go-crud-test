@@ -1,7 +1,10 @@
 package driven
 
-import "my-tracking-list-backend/core/domain"
+import (
+	"context"
+	"my-tracking-list-backend/core/domain"
+)
 
 type OauthHandler interface {
-	DecodeGoogleToken(token string) (domain.GoogleToken, error)
+	DecodeGoogleToken(ctx context.Context, token string) (domain.GoogleToken, error)
 }
