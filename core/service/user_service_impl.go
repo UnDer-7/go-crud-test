@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"my-tracking-list-backend/core/app_error"
 	"my-tracking-list-backend/core/domain"
 	"my-tracking-list-backend/core/ports/driven"
@@ -27,7 +26,7 @@ func (service userService) SaveUser(ctx context.Context, user domain.User) (doma
 		)
 	}
 
-	if existes, err := service.UserExistes(ctx, user.Email); err != nil {
+	if existes, err := service.UserExists(ctx, user.Email); err != nil {
 		return domain.User{}, err
 	} else if existes {
 		return domain.User{}, app_error.ThrowBusinessError(
@@ -39,7 +38,6 @@ func (service userService) SaveUser(ctx context.Context, user domain.User) (doma
 	// todo: validar campos do user para n deixar inserir com vazios/nils
 	userSave, err := service.repository.Persist(ctx, user)
 	if err != nil {
-		fmt.Print(err)
 		return domain.User{}, err
 	}
 	return userSave, nil
@@ -54,6 +52,6 @@ func (service userService) FindByEmail(ctx context.Context, email string) (domai
 	return userFound, nil
 }
 
-func (service userService) UserExistes(ctx context.Context, email string) (bool, error) {
+func (service userService) UserExists(ctx context.Context, email string) (bool, error) {
 	return service.repository.ExistesByEmail(ctx, email)
 }

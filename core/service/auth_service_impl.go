@@ -22,7 +22,7 @@ func (s authService) SignIn(ctx context.Context, token string) (domain.User, err
 		return domain.User{}, err
 	}
 
-	exists, err := s.userService.UserExistes(ctx, tokenGoogle.Email)
+	exists, err := s.userService.UserExists(ctx, tokenGoogle.Email)
 	if err != nil {
 		return domain.User{}, err
 	}

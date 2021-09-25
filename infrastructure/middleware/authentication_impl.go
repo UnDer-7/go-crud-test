@@ -35,7 +35,7 @@ func (a authentication) WithAuthentication(ctx *gin.Context) {
 		return
 	}
 
-	exists, err := a.userService.UserExistes(ctx, gToken.Email)
+	exists, err := a.userService.UserExists(ctx, gToken.Email)
 	if err != nil {
 		whenAnErrorOccurs(err)
 		return
